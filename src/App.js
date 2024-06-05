@@ -1,24 +1,30 @@
-import logo from './logo.svg';
-import './App.css';
+import { Route, Routes, Navigate} from "react-router-dom";
+import { Homepage } from "./pages/Homepage";
+import { Aboutpage } from "./pages/Aboutpage";
+import { Notfoundpage } from "./pages/Notfoundpage";
+import { Blogpage } from "./pages/Blogpage";
+import { Layout } from "./components/Layout";
+import { Singlepage } from "./pages/Singlepage";
+import { Createpost } from "./pages/Createpost";
+import { EditPost } from "./pages/EditPost";
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Homepage />} />
+          <Route path="about" element={<Aboutpage />} />
+          <Route path="about-us" element={<Navigate to="/about" replace/>} />
+          <Route path="blog" element={<Blogpage />} />
+          <Route path="blog/:id" element={<Singlepage />} />
+          <Route path="blog/new" element={<Createpost />} />
+          <Route path="blog/:id/edit" element={<EditPost />} />
+          <Route path="*" element={<Notfoundpage />} />
+        </Route>
+      </Routes>
+    </>
   );
 }
 
