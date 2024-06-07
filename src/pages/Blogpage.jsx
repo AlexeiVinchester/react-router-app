@@ -1,9 +1,16 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../hook/useAuth";
 const Blogpage = () => {
 
+    const {signout} = useAuth();
     const [posts, setPosts] = useState([]);
+    const navigate = useNavigate();
     console.log(useLocation());
+
+    const handleClick = () => {
+        signout(() => navigate('/', {replace: true}))
+    };
 
     useEffect(() => {
         fetch(`https://jsonplaceholder.typicode.com/posts`)
@@ -14,6 +21,8 @@ const Blogpage = () => {
     return (
         <>
             <h1>Our posts: </h1>
+            <Link to='/blog/new'>Create new post</Link>
+            <button onClick={handleClick}>Log out</button>
             {
                 posts.map(post => (
                     <li key={post.id}>

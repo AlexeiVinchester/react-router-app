@@ -7,11 +7,15 @@ import { Layout } from "./components/Layout";
 import { Singlepage } from "./pages/Singlepage";
 import { Createpost } from "./pages/Createpost";
 import { EditPost } from "./pages/EditPost";
+import { Loginpage } from "./pages/Loginpage";
+import { Requireauth } from "./hoc/Requireauth";
+import { AuthProvider } from "./hoc/AuthProvider";
 
 
 function App() {
   return (
     <>
+    <AuthProvider>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Homepage />} />
@@ -19,11 +23,18 @@ function App() {
           <Route path="about-us" element={<Navigate to="/about" replace/>} />
           <Route path="blog" element={<Blogpage />} />
           <Route path="blog/:id" element={<Singlepage />} />
-          <Route path="blog/new" element={<Createpost />} />
+          <Route path="blog/new" element={
+            <Requireauth>
+              <Createpost />
+            </Requireauth>
+          } />
+          <Route path="login" element={<Loginpage />} />
           <Route path="blog/:id/edit" element={<EditPost />} />
           <Route path="*" element={<Notfoundpage />} />
         </Route>
       </Routes>
+    </AuthProvider>
+      
     </>
   );
 }
