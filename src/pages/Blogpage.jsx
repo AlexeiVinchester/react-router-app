@@ -1,4 +1,4 @@
-import { Await, Link, defer, useLoaderData, useNavigate, useSearchParams } from "react-router-dom";
+import { Await, Link, json, useLoaderData, useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../hook/useAuth";
 import { BlogFilter } from "../components/BlogFilter";
 import { Suspense } from "react";
@@ -60,14 +60,22 @@ const Blogpage = () => {
 
 const getPosts = async () => {
     const response = await fetch(`https://jsonplaceholder.typicode.com/posts`);
-    const data = await response.json();
-    return data;
+
+    /*if (!response.ok) {
+        throw new Response('', {statusText: 'Not found!', status: response.status})
+        //throw new Error('404 not found');
+    }*/
+    const posts = await response.json();
+    return posts;
 }
 
 const blogLoader = async () => {
-    return defer({
-        posts: getPosts()
-    });
+    const posts = await getPosts();
+    if (!posts.length) {
+        throw json({message: 'Not found', reason: 'Wrong url'}, {status: 404})
+    }
+
+    return { posts };
 }
 
 export { Blogpage, blogLoader }

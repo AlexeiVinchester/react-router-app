@@ -1,5 +1,5 @@
 import { Suspense } from "react";
-import { Link, useNavigate, useLoaderData, useAsyncValue, defer } from "react-router-dom";
+import { Link, useNavigate, useLoaderData, useAsyncValue } from "react-router-dom";
 import { Await } from "react-router-dom";
 
 const Post = () => {
@@ -67,7 +67,7 @@ const getComments = async (id) => {
 
 const postLoader = async ({ params }) => {
     const id = params.id;
-    return { post: getPost(id), id, comments: await getComments(id)};
+    return { post: getPost(id), id, comments: getComments(id)};
 };
 
 export { Singlepage, postLoader }
